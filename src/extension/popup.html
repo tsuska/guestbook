@@ -6,7 +6,7 @@
  -->
 <html>
   <head>
-    <title>Šuska Extension's Popup</title>
+    <title>webpagecomment Extension's Popup</title>
     <!--
       - JavaScript and HTML must be in separate files: see our Content Security
       - Policy documentation[1] for details and explanation.
@@ -14,10 +14,23 @@
       - [1]: https://developer.chrome.com/extensions/contentSecurityPolicy
      -->
     <script src="popup.js"></script>
+    <style>
+        body {
+            width: 400px;
+        }
+
+        textarea, input {
+            width: 100%;
+        }
+    </style>
   </head>
   <body>
     <div id="url"></div>
-    <div id="response"></div>
+    <div>
+        <textarea id="comment"></textarea>
+        <input id="submit" type="submit" value="Post comment" />
+    </div>
+    <ul id="comments"></ul>
   </body>
 </html>
 

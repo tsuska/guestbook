@@ -48,11 +48,11 @@ function getCurrentTabUrl(callback) {
  * @param {function(string)} callback - Called when server respond. The callback gets response.
  * @param {function(string)} errorCallback - Called when something wrong. The callback gets a string that describes the failure reason.
  */
-function getResponse(url, callback, errorCallback) {
+function getResponse(data, callback, errorCallback) {
     var x = new XMLHttpRequest();
-    x.open("POST", "localhost:8080");
+    x.open("POST", "https://webpagecomment.appspot.com/");
     x.setRequestHeader("Content-Type", "application/json");
-    x.send(JSON.stringify({URL: url}));
+    x.send(JSON.stringify(data));
     x.responseType = 'json';
     x.onload = function() {
         var response = x.response;
@@ -72,15 +72,33 @@ function renderURL(url) {
 }
 
 function renderResponse(response) {
-  document.getElementById('response').textContent = response;
+  var responseJSON = JSON.parse(response);
+  var comments = responseJSON.comments;
+  var li;
+  for (var i = 0; i < comments.length; i++) {
+    li = document.createElement('li');
+    li.textContent = comments[i];
+    document.getElementById('comments').appendChild(li);
+  }
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-  getCurrentTabUrl(function(url) {
-    // Put the image URL in Google search.
+    document.getElementById('submit').addEventListener('click', function () {
+        getCurrentTabUrl(function (url) {
+            getResponse({ URL: url, comment: document.getElementById('comment').value }, function (response) {
+                document.getElementById('comment').value = '';
+                document.getElementById('comments').innerHTML = '';
+                renderResponse(response);
+            }, function (errorMessage) {
+                renderResponse(errorMessage);
+            });
+        });
+    });
+
+    getCurrentTabUrl(function (url) {
     renderURL(url);
 
-    getResponse(url, function(response) {
+    getResponse({ URL: url }, function (response) {
         renderResponse(response);
     }, function (errorMessage) {
         renderResponse(errorMessage);

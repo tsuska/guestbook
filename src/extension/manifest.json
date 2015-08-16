@@ -1,7 +1,7 @@
 {
     "manifest_version": 2,
 
-    "name": "Šuska",
+    "name": "webpagecomment",
     "description": "Comment any page",
     "version": "0.0.1",
 
@@ -11,6 +11,6 @@
     },
     "permissions": [
         "activeTab",
-        "localhost:8080"
+        "https://webpagecomment.appspot.com/"
     ]
 }
